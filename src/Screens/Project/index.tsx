@@ -37,7 +37,6 @@ const Project: React.FC = () => {
     window.api.get("/get-photo-info", (res: any) => {
       // console.log(res);
       if (res.status === 200) {
-        console.log(res);
         setImageName(res.response.name);
         setBase64Image(res.response.imageSource);
         setTotalImages(res.response.totalPhotos);
@@ -62,7 +61,6 @@ const Project: React.FC = () => {
 
       window.api.get("/save-photo-info", (res: any) => {
         if (res.status === 200) {
-          console.log(res);
           setImageIndex((prev) => (prev === totalImages - 1 ? prev : prev + 1));
           if (imageIndex === totalImages - 1) {
             setShowSubmitButton(true);
@@ -121,6 +119,10 @@ const Project: React.FC = () => {
               }
               if (e.key === "ArrowRight" || e.key === "Enter") {
                 saveImageInfo();
+              }
+              if (e.key === "." || e.key === ",") {
+                e.preventDefault();
+                InputRef.current.value = InputRef.current.value + ";";
               }
             }}
           />

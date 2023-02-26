@@ -51,7 +51,7 @@ export const instanceServices = async () => {
         if (files) {
           const rowsToCsvArray: any = [];
           files.map((item) => {
-            const [, extension] = item.split(".");
+            const extension = item?.split(".")[1];
             if (IMAGES_EXTENSIONS.includes(extension.toLocaleLowerCase())) {
               rowsToCsvArray.push([item, ""]);
             }
@@ -99,7 +99,7 @@ export const instanceServices = async () => {
         fs.readFileSync(projectJsonPath, "utf8")
       );
       const fileName = fs.readdirSync(pathFolder)[index];
-      const [, fileExtension] = fileName.split(".");
+      const fileExtension = fileName?.split(".")[1];
       const filePath = path.join(pathFolder, fileName);
       const data = fs.readFileSync(filePath);
       const base64Image = Buffer.from(data).toString("base64");
@@ -120,7 +120,6 @@ export const instanceServices = async () => {
         })
         .on("end", (rowCount: number) => {
           const nameImage = currentCSV[index][0];
-          //handle mutiples inputs
           let HandleCurrentNumberLabel = currentCSV[index];
           HandleCurrentNumberLabel.shift();
           HandleCurrentNumberLabel = HandleCurrentNumberLabel.join(";");

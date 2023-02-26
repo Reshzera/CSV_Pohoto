@@ -19,6 +19,15 @@ type projectListTYype = {
     totalImage: string;
   };
 };
+
+const handlePercentage = (total: number, done: number) => {
+  if (Number.isNaN(total) || Number.isNaN(done)) {
+    return 0;
+  }
+
+  return ((Number(done) + 1) / Number(total)) * 100;
+};
+
 const MyProject: React.FC = () => {
   const [projectList, setProjectList] = useState<projectListTYype[]>([]);
   const navigate = useNavigate();
@@ -26,7 +35,6 @@ const MyProject: React.FC = () => {
   useEffect(() => {
     window.api.post("/list-projects", {});
     window.api.get("/list-projects", (res) => {
-      console.log(res);
       if (res.response) {
         setProjectList(res.response.result);
       }
@@ -55,7 +63,9 @@ const MyProject: React.FC = () => {
                   navigate("/project", {
                     state: {
                       projectName: item.ProjectInfo.name,
-                      lastImageIndex: Number(item.ProjectInfo.lastImageIndex),
+                      lastImageIndex: Number(
+                        item.ProjectInfo.lastImageIndex ?? 0
+                      ),
                     },
                   });
                 }}
@@ -66,9 +76,10 @@ const MyProject: React.FC = () => {
                 <td>{item.ProjectInfo.pathFolder}</td>
 
                 <td>
-                  {((Number(item.ProjectInfo.lastImageIndex) + 1) /
-                    Number(item.ProjectInfo.totalImage)) *
-                    100}
+                  {handlePercentage(
+                    Number(item.ProjectInfo.totalImage),
+                    Number(item.ProjectInfo.lastImageIndex)
+                  )}
                   %
                 </td>
               </ListItem>
