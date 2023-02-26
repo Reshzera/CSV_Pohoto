@@ -13,6 +13,8 @@ import {
 import { MdOutlineArrowBackIosNew } from "react-icons/md";
 import { useLocation, useNavigate } from "react-router-dom";
 import { GrFormNext, GrFormPrevious } from "react-icons/gr";
+import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
+
 // import { Container } from './styles';
 
 const Project: React.FC = () => {
@@ -97,9 +99,13 @@ const Project: React.FC = () => {
 
       <ImageSection>
         <h1>{imageName}</h1>
-        <ImageContanier>
-          <img src={base64Image} />
-        </ImageContanier>
+        <TransformWrapper>
+          <TransformComponent>
+            <ImageContanier>
+              <img src={base64Image} />
+            </ImageContanier>
+          </TransformComponent>
+        </TransformWrapper>
         <ControlerImage>
           <div
             className="next"
