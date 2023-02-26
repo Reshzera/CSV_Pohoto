@@ -79,7 +79,7 @@ const MyProject: React.FC = () => {
                   {handlePercentage(
                     Number(item.ProjectInfo.totalImage),
                     Number(item.ProjectInfo.lastImageIndex)
-                  )}
+                  ).toFixed(2)}
                   %
                 </td>
               </ListItem>

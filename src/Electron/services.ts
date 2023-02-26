@@ -48,11 +48,15 @@ export const instanceServices = async () => {
         fs.writeFileSync(projectFilePath, projectInfo);
         fs.closeSync(fs.openSync(csvFilePath, "w"));
         const files = fs.readdirSync(project.pathFolder);
+
         if (files) {
           const rowsToCsvArray: any = [];
           files.map((item) => {
-            const extension = item?.split(".")[1];
-            if (IMAGES_EXTENSIONS.includes(extension.toLocaleLowerCase())) {
+            const extension = item?.split(".")?.pop();
+            if (
+              IMAGES_EXTENSIONS.includes(extension.toLocaleLowerCase()) &&
+              !item.startsWith("._")
+            ) {
               rowsToCsvArray.push([item, ""]);
             }
           });
@@ -98,13 +102,14 @@ export const instanceServices = async () => {
       const { pathFolder } = JSON.parse(
         fs.readFileSync(projectJsonPath, "utf8")
       );
-      const fileName = fs.readdirSync(pathFolder)[index];
-      const fileExtension = fileName?.split(".")[1];
+      const fileName = fs
+        .readdirSync(pathFolder)
+        .filter((item) => !item.startsWith("._"))[index];
+      const fileExtension = fileName?.split(".")?.pop();
       const filePath = path.join(pathFolder, fileName);
       const data = fs.readFileSync(filePath);
       const base64Image = Buffer.from(data).toString("base64");
       const imgSrc = `data:image/${fileExtension};base64,${base64Image}`;
-
       const currentCSV: any[] = [];
       //get csv infos
       fs.createReadStream(projectCsvPath)
