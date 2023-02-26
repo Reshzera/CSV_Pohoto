@@ -3,6 +3,7 @@ import { dialog, ipcMain } from "electron";
 import { parse, writeToPath } from "fast-csv";
 import * as fs from "fs";
 import path from "path";
+import { sortDir } from "./utils";
 
 const IMAGES_EXTENSIONS = ["jpg", "jpeg", "png"];
 
@@ -47,7 +48,7 @@ export const instanceServices = async () => {
       if (!fs.existsSync(projectFilePath) && !fs.existsSync(csvFilePath)) {
         fs.writeFileSync(projectFilePath, projectInfo);
         fs.closeSync(fs.openSync(csvFilePath, "w"));
-        const files = fs.readdirSync(project.pathFolder);
+        const files = fs.readdirSync(project.pathFolder).sort(sortDir);
 
         if (files) {
           const rowsToCsvArray: any = [];
@@ -104,6 +105,7 @@ export const instanceServices = async () => {
       );
       const fileName = fs
         .readdirSync(pathFolder)
+        .sort(sortDir)
         .filter((item) => !item.startsWith("._"))[index];
       const fileExtension = fileName?.split(".")?.pop();
       const filePath = path.join(pathFolder, fileName);

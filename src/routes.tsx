@@ -1,6 +1,7 @@
 import React from "react";
 import { createHashRouter, RouterProvider } from "react-router-dom";
 import Home from "./Screens/Home";
+import MyCSV from "./Screens/MyCSV";
 import MyProject from "./Screens/MyProject";
 import Project from "./Screens/Project";
 import SideMenuTemplate from "./Templates/SideMenuTemplate";
@@ -22,7 +23,7 @@ const router = createHashRouter([
       },
       {
         path: "/my-csv",
-        element: <Home />,
+        element: <MyCSV />,
       },
     ],
   },

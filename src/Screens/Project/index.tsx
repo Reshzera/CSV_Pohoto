@@ -13,7 +13,11 @@ import {
 import { MdOutlineArrowBackIosNew } from "react-icons/md";
 import { useLocation, useNavigate } from "react-router-dom";
 import { GrFormNext, GrFormPrevious } from "react-icons/gr";
-import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
+import {
+  TransformWrapper,
+  TransformComponent,
+  ReactZoomPanPinchRef,
+} from "react-zoom-pan-pinch";
 
 // import { Container } from './styles';
 
@@ -30,6 +34,7 @@ const Project: React.FC = () => {
   const [base64Image, setBase64Image] = useState<string>("");
   const [totalImages, setTotalImages] = useState<number>(0);
   const [showSubmitButton, setShowSubmitButton] = useState<boolean>(false);
+  const ZoomImageRef = useRef<ReactZoomPanPinchRef | null>(null);
 
   const getImageInfo = () => {
     window.api.post("/get-photo-info", {
@@ -82,6 +87,12 @@ const Project: React.FC = () => {
     getImageInfo();
   }, [imageIndex]);
 
+  useEffect(() => {
+    if (ZoomImageRef.current) {
+      ZoomImageRef.current.resetTransform();
+    }
+  }, [base64Image]);
+
   return (
     <ProjectContainer>
       <Header>
@@ -99,7 +110,7 @@ const Project: React.FC = () => {
 
       <ImageSection>
         <h1>{imageName}</h1>
-        <TransformWrapper>
+        <TransformWrapper ref={ZoomImageRef} pinch={{ step: 0.4 }}>
           <TransformComponent>
             <ImageContanier>
               <img src={base64Image} />
@@ -124,7 +135,9 @@ const Project: React.FC = () => {
                 setImageIndex((prev) => (prev === 0 ? prev : prev - 1));
               }
               if (e.key === "ArrowRight" || e.key === "Enter") {
-                saveImageInfo();
+                if (InputRef.current.value) {
+                  saveImageInfo();
+                }
               }
               if (e.key === "." || e.key === ",") {
                 e.preventDefault();

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Title from "../../Components/Title";
+import { FcOpenedFolder } from "react-icons/fc";
 import {
   ListContainer,
   ListItem,
@@ -43,7 +44,7 @@ const MyProject: React.FC = () => {
 
   return (
     <MyProjectContainer>
-      <Title name="Meus Projetos" />
+      <Title name="Meus Projetos" icon={<FcOpenedFolder />} />
       <TableWarpper>
         <ListContainer>
           <thead>
