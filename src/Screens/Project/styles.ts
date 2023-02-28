@@ -1,49 +1,53 @@
 import styled from "styled-components";
 
-export const ProjectContainer = styled.main`
+export const ProjectContainer = styled.div`
   padding: 0px;
+  max-height: 100vh;
+  height: 100vh;
+  display: flex;
   flex-direction: column;
-`;
-
-export const Header = styled.div`
-  background-color: ${({ theme }) => theme.Colors.gray._100};
-  padding: 32px 32px;
-  height: max-content;
-  width: 100%;
-  inset: 0;
-`;
-
-export const ImageContanier = styled.div`
-  height: 60vh;
-  background-color: black;
-  img {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-  }
+  gap: 16px;
+  overflow: hidden;
 `;
 
 export const ImageSection = styled.section`
-  margin: 0 auto;
-  margin-top: 32px;
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
+  padding: 0px 0px;
+  max-height: calc(100% - 112px);
 
   h1 {
-    font-size: 24px;
     color: white;
-    font-weight: 700;
-    margin-bottom: 16px;
+  }
+
+  div {
+    width: 100%;
+    max-height: 100%;
+    display: flex;
+    position: relative;
+    overflow: hidden;
+    user-select: none;
+
+    > * {
+      height: 100%;
+      width: 100%;
+    }
+
+    img {
+      object-fit: contain;
+    }
   }
 `;
 
 export const ControlerImage = styled.div`
+  height: 80px;
   display: flex;
   align-items: center;
-  margin-top: 24px;
+  justify-content: center;
+  position: relative;
   gap: 8px;
+  background-color: ${({ theme }) => theme.Colors.gray._100};
 
   input {
     border: none;
@@ -57,10 +61,17 @@ export const ControlerImage = styled.div`
   div.next {
     border-radius: 8px;
     padding: 8px;
-    background-color: gray;
+    background-color: white;
     display: flex;
     align-items: center;
     justify-content: center;
+  }
+
+  h1 {
+    font-size: 16px;
+    color: #fff;
+    position: absolute;
+    right: 16px;
   }
 `;
 
@@ -71,12 +82,9 @@ export const ProgressBar = styled.div<ProgressBarProps>`
   display: flex;
   position: relative;
   background-color: gray;
-  width: 90%;
-  height: 8px;
+  width: 100%;
+  height: 6px;
   align-self: center;
-  margin-top: auto;
-  margin-bottom: 32px;
-  border-radius: 8px;
 
   ::before {
     content: "";
@@ -88,7 +96,7 @@ export const ProgressBar = styled.div<ProgressBarProps>`
     border-radius: 8px;
     width: ${({ porcentage }) => `${porcentage}%`};
     max-width: 100%;
-    height: 8px;
+    height: 6px;
     transition: 0.5s ease-in;
   }
 `;
@@ -97,10 +105,10 @@ export const SubmitButton = styled.button`
   outline: none;
   border: none;
   border-radius: 8px;
-  padding: 16px 32px;
+  padding: 8px 16px;
   background-color: lightgreen;
   font-size: 16px;
-  margin-top: 16px;
   color: darkgreen;
-  margin: auto;
+  position: absolute;
+  right: 16px;
 `;

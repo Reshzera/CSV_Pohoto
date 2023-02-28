@@ -5,7 +5,7 @@
 import { contextBridge, ipcRenderer } from "electron";
 
 export const api = {
-  action: (message: string) => ipcRenderer.invoke(message),
+  action: (message: string, data?: any) => ipcRenderer.invoke(message, data),
   post: (channel: string, data: any) => ipcRenderer.send(channel, data),
   get: (channel: string, callback: (data: any) => void) =>
     ipcRenderer.once(channel, (_, data) => callback(data)),

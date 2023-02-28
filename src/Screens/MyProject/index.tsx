@@ -6,8 +6,10 @@ import {
   ListContainer,
   ListItem,
   MyProjectContainer,
+  SVGcontainer,
   TableWarpper,
 } from "./styles";
+import { AiOutlineFileText } from "react-icons/ai";
 
 // import { Container } from './styles';
 type projectListTYype = {
@@ -54,6 +56,7 @@ const MyProject: React.FC = () => {
               <th>Data</th>
               <th>Caminho</th>
               <th>Status</th>
+              <th>CSV</th>
             </tr>
           </thead>
           <tbody>
@@ -82,6 +85,16 @@ const MyProject: React.FC = () => {
                     Number(item.ProjectInfo.lastImageIndex)
                   ).toFixed(2)}
                   %
+                </td>
+                <td>
+                  <SVGcontainer
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      window.api.action("/open-csv", item.ProjectInfo.name);
+                    }}
+                  >
+                    <AiOutlineFileText />
+                  </SVGcontainer>
                 </td>
               </ListItem>
             ))}

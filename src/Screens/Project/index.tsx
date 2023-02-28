@@ -1,16 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useEffect, useRef, useState } from "react";
-import Title from "../../Components/Title";
 import {
   ControlerImage,
-  Header,
-  ImageContanier,
   ImageSection,
   ProgressBar,
   ProjectContainer,
   SubmitButton,
 } from "./styles";
-import { MdOutlineArrowBackIosNew } from "react-icons/md";
 import { useLocation, useNavigate } from "react-router-dom";
 import { GrFormNext, GrFormPrevious } from "react-icons/gr";
 import {
@@ -33,6 +29,7 @@ const Project: React.FC = () => {
   const [imageName, setImageName] = useState<string>("");
   const [base64Image, setBase64Image] = useState<string>("");
   const [totalImages, setTotalImages] = useState<number>(0);
+  const unableNextFunction = useRef<boolean>(false);
   const [showSubmitButton, setShowSubmitButton] = useState<boolean>(false);
   const ZoomImageRef = useRef<ReactZoomPanPinchRef | null>(null);
 
@@ -48,7 +45,7 @@ const Project: React.FC = () => {
         setBase64Image(res.response.imageSource);
         setTotalImages(res.response.totalPhotos);
         if (InputRef.current && res.response.number) {
-          InputRef.current.value = res.response.number;
+          // InputRef.current.value = res.response.number;
           InputRef.current.select();
         }
       }
@@ -59,6 +56,7 @@ const Project: React.FC = () => {
     });
   };
   const saveImageInfo = () => {
+    unableNextFunction.current = true;
     if (InputRef.current) {
       window.api.post("/save-photo-info", {
         index: imageIndex,
@@ -76,6 +74,8 @@ const Project: React.FC = () => {
         if (res.status === 500) {
           // setImageIndex(0);
         }
+
+        unableNextFunction.current = false;
       });
     }
   };
@@ -95,77 +95,65 @@ const Project: React.FC = () => {
 
   return (
     <ProjectContainer>
-      <Header>
-        <Title
-          name={projectName}
-          icon={
-            <MdOutlineArrowBackIosNew
-              color="white"
-              onClick={() => navigate(-1)}
-              style={{ cursor: "pointer" }}
-            />
-          }
-        />
-      </Header>
-
+      <ProgressBar porcentage={100 * ((imageIndex + 1) / totalImages)} />
       <ImageSection>
-        <h1>{imageName}</h1>
-        <TransformWrapper ref={ZoomImageRef} pinch={{ step: 0.4 }}>
-          <TransformComponent>
-            <ImageContanier>
+        <div>
+          <TransformWrapper ref={ZoomImageRef}>
+            <TransformComponent>
               <img src={base64Image} />
-            </ImageContanier>
-          </TransformComponent>
-        </TransformWrapper>
-        <ControlerImage>
-          <div
-            className="next"
-            onClick={() => {
-              setImageIndex((prev) => (prev === 0 ? prev : prev - 1));
-            }}
-          >
-            <GrFormPrevious />
-          </div>
-          <input
-            placeholder="Ex: 12;43;234"
-            ref={InputRef}
-            onKeyDown={(e) => {
-              if (e.key === "ArrowLeft") {
-                e.preventDefault();
-                setImageIndex((prev) => (prev === 0 ? prev : prev - 1));
-              }
-              if (e.key === "ArrowRight" || e.key === "Enter") {
-                if (InputRef.current.value) {
-                  saveImageInfo();
-                }
-              }
-              if (e.key === "." || e.key === ",") {
-                e.preventDefault();
-                InputRef.current.value = InputRef.current.value + ";";
-              }
-            }}
-          />
-          <div
-            className="next"
-            onClick={() => {
-              saveImageInfo();
-            }}
-          >
-            <GrFormNext />
-          </div>
-        </ControlerImage>
+            </TransformComponent>
+          </TransformWrapper>
+        </div>
       </ImageSection>
-      {showSubmitButton && (
-        <SubmitButton
+
+      <ControlerImage>
+        {!showSubmitButton && <h1>{imageName}</h1>}
+
+        {showSubmitButton && (
+          <SubmitButton
+            onClick={() => {
+              navigate("/my-project");
+            }}
+          >
+            Finalizar
+          </SubmitButton>
+        )}
+        <div
+          className="next"
           onClick={() => {
-            navigate("/my-project");
+            setImageIndex((prev) => (prev === 0 ? prev : prev - 1));
           }}
         >
-          Finalizar
-        </SubmitButton>
-      )}
-
-      <ProgressBar porcentage={100 * ((imageIndex + 1) / totalImages)} />
+          <GrFormPrevious />
+        </div>
+        <input
+          placeholder="Ex: 12;43;234"
+          ref={InputRef}
+          onKeyDown={(e) => {
+            if (e.key === "ArrowLeft") {
+              e.preventDefault();
+              setImageIndex((prev) => (prev === 0 ? prev : prev - 1));
+            }
+            if (e.key === "ArrowRight" || e.key === "Enter") {
+              if (InputRef.current.value && !unableNextFunction.current) {
+                saveImageInfo();
+              }
+            }
+            if (e.key === "." || e.key === ",") {
+              e.preventDefault();
+              InputRef.current.value = InputRef.current.value + ";";
+            }
+          }}
+        />
+        <div
+          className="next"
+          onClick={() => {
+            saveImageInfo();
+          }}
+        >
+          <GrFormNext />
+        </div>
+      </ControlerImage>
     </ProjectContainer>
   );
 };

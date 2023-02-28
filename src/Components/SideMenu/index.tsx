@@ -6,7 +6,7 @@ import {
   TitleSideMenu,
 } from "./styles";
 import {
-  AiOutlineFileText,
+  // AiOutlineFileText,
   AiOutlineLogout,
   AiOutlineFolder,
   AiOutlineFolderAdd,
@@ -43,7 +43,7 @@ const SideMenu: React.FC = () => {
           <AiOutlineFolder color="white" />
           Meus Projetos
         </NavPills>
-        <NavPills
+        {/* <NavPills
           isActive={location.pathname === "/my-csv"}
           onClick={() => {
             navigate("/my-csv");
@@ -51,7 +51,7 @@ const SideMenu: React.FC = () => {
         >
           <AiOutlineFileText color="white" />
           Meus CSVs
-        </NavPills>
+        </NavPills> */}
         <NavPills>
           <AiOutlineLogout style={{ transform: "rotate(180deg)" }} />
           Sair

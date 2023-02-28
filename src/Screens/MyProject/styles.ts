@@ -60,3 +60,15 @@ export const ListItem = styled.tr`
     font-size: 16px;
   }
 `;
+
+export const SVGcontainer = styled.div`
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+
+  svg {
+    color: white;
+  }
+`;

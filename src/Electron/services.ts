@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { dialog, ipcMain } from "electron";
+import { dialog, ipcMain, shell } from "electron";
 import { parse, writeToPath } from "fast-csv";
 import * as fs from "fs";
 import path from "path";
@@ -18,6 +18,17 @@ export const instanceServices = async () => {
       //retornar erro se nao tiver foto
       return filePaths[0];
     }
+  });
+
+  ipcMain.handle("/open-csv", (event, projectName) => {
+    const projectCsvPath = path.join(
+      __dirname,
+      "/projects",
+      `/${projectName}`,
+      `/${projectName}.csv`
+    );
+
+    shell.openPath(projectCsvPath);
   });
 
   ipcMain.on("/create-project", (event, project) => {

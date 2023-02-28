@@ -4,6 +4,7 @@ import Home from "./Screens/Home";
 import MyCSV from "./Screens/MyCSV";
 import MyProject from "./Screens/MyProject";
 import Project from "./Screens/Project";
+import HeaderTemplate from "./Templates/HeaderTemplate";
 import SideMenuTemplate from "./Templates/SideMenuTemplate";
 
 // import { Container } from './styles';
@@ -29,7 +30,8 @@ const router = createHashRouter([
   },
   {
     path: "/project",
-    element: <Project />,
+    element: <HeaderTemplate />,
+    children: [{ path: "/project", element: <Project /> }],
   },
 ]);
 
